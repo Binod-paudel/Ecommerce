@@ -1,11 +1,12 @@
 import User from "../models/user.model.js";
+import asyncHandler from "../middlewares/asyncHandler.js";
+import createToken from "../utils/token.utils.js";
 
 
 // @desc register new user
 // @route /api/v2/users/register
 // @access public
-const register = async (req, res, next) => {
-     try{
+const register = asyncHandler(async (req, res, next) => {
      let { email, password } = req.body;
      let userexists = await User.findOne({ email });
      if (userexists) {
@@ -15,6 +16,7 @@ const register = async (req, res, next) => {
      }
    
      let user = await User.create(req.body);
+     createToken(res, user._id)
      res.send({
        message: "User registered!",
        user: {
@@ -23,16 +25,13 @@ const register = async (req, res, next) => {
          role: user.role,
        },
      });
-     }catch(err){
-          next(err)
-     }
-}
+});
 
 
 //@desc login
 //@route /api/v2/users/login
 //access public
-const login = async(req, res)=>{
+const login = asyncHandler(async(req, res)=>{
      let {email, password}= req.body;
      let user = await User.findOne({email});
      if(!user){
@@ -41,6 +40,7 @@ const login = async(req, res)=>{
           throw err;
      }
      if(await user.matchPassword(password)){
+          createToken(res, user._id)
           res.send({
                message: "Login Successful!",
                user: {
@@ -54,7 +54,21 @@ const login = async(req, res)=>{
           err.status = 400;
           throw err
      }
-}
+});
+
+const logout = asyncHandler(async(req, res)=>{
+     res.clearCookie("jwt");
+     res.send({message: "logout successfully!"})
+})
 
 
-export {register, login}
+//@desc get all users
+//@route /api/v2/users
+//@private + admin
+const getUser = asyncHandler(async(req, res)=>{
+     let users = await User.find({}).select(-password);
+     res.send(users)
+})
+
+
+export {register, login, logout, getUser}
