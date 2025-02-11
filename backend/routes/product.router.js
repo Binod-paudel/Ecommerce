@@ -6,7 +6,7 @@ import { checkAuth, checkAdmin } from "../middlewares/auth.middleware.js";
 const router = express.Router();
 
 
-router.post("/",checkAuth, checkAdmin, addProduct)
+router.post("/",checkAuth, checkAdmin, addProduct);
 
 
 export default router

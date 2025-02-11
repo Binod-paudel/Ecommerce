@@ -4,35 +4,23 @@ import asyncHandler from "./asyncHandler.js";
 
 const checkAuth = asyncHandler(async (req, res, next) => {
     let token = req.cookies.jwt;
-    console.log(token);
     if (!token) {
-        let err = new Error("You must be logged in!");
-        err.status = 401;
-        throw err;
+      throw new ApiError(401, "You must be logged in!");
     }
-    
     try {
-        let { userId } = jwt.verify(token, process.env.JWT_SECRET);
-        let user = await User.findById(userId);
-        
-        if (!user) {
-            let err = new Error("User not found!");
-            err.status = 404;
-            throw err;
-        }
-
-        req.user = {
-            name: user.name,
-            email: user.email,
-            role: user.role,
-        };
-        next();
+      let { userId } = jwt.verify(token, process.env.JWT_SECRET);
+      let user = await User.findById(userId);
+      req.user = {
+        _id: user._id,
+        name: user.name,
+        email: user.email,
+        role: user.role,
+      };
+      next();
     } catch (e) {
-        let err = new Error("Invalid token!");
-        err.status = 401;
-        throw err;
+      throw new ApiError(401, "Invalid Token");
     }
-});
+  });
 
 const checkAdmin = asyncHandler(async (req, res, next) => {
     if (req.user?.role === "admin") {

@@ -50,4 +50,5 @@ const addProduct = asynchandler(async (req, res) => {
   res.send({message: "Proudct created successfully!", product});
 });
 
+
 export {addProduct}
