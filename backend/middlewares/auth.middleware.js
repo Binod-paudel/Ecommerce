@@ -1,6 +1,7 @@
 import jwt from "jsonwebtoken";
 import User from "../models/user.model.js";
 import asyncHandler from "./asyncHandler.js";
+import apiError from "../utils/apiError.js";
 
 const checkAuth = asyncHandler(async (req, res, next) => {
     let token = req.cookies.jwt;
@@ -18,7 +19,7 @@ const checkAuth = asyncHandler(async (req, res, next) => {
       };
       next();
     } catch (e) {
-      throw new ApiError(401, "Invalid Token");
+      throw new apiError(401, "Invalid Token");
     }
   });
 

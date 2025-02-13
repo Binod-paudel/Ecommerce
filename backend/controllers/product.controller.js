@@ -152,4 +152,6 @@ const newArrivalProducts = asynchandler(async(req, res)=>{
 })
 
 
+
+
 export {getProducts, addProduct, getProductById, updateProduct, deleteProduct, getTopProducts, similarProduct, newArrivalProducts}
