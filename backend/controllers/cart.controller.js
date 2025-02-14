@@ -92,9 +92,88 @@ const updateCart = asyncHandler(async (req, res) => {
     );
     await cart.save();
     res.send(cart);
-  }else{
-     throw new apiError(404, "Product not found in cart!");
+  } else {
+    throw new apiError(404, "Product not found in cart!");
   }
 });
 
-export { addCart, updateCart };
+//@desc delete product
+//@route DELETE /api/v2/cart
+//@access public
+
+const deleteCart = asyncHandler(async (req, res) => {
+  let { productId, size, color, guestId, userId } = req.body;
+  let cart = await getOrCreateCart(userId, guestId);
+  if (!cart) {
+    throw new apiError(404, "Cart not Found!");
+  }
+  let productIndex = cart.products.findIndex(
+    (p) =>
+      p.productId.toString() === productId &&
+      p.size === size &&
+      p.color === color
+  );
+  if (productIndex > -1) {
+    cart.products.splice(productIndex, 1);
+    cart.totalPrice = cart.products.reduce(
+      (acc, item) => acc + item.price * item.quantity,
+      0
+    );
+    await cart.save();
+    res.send(cart);
+  } else {
+    throw new apiError(404, "Product not found in cart");
+  }
+});
+
+//@desc get logged-in user's or guest users's cart
+//@route GET /api/v2/cart
+//@access public
+
+const getCart = asyncHandler(async (req, res) => {
+  let { userId, guestId } = req.body;
+  let cart = await getOrCreateCart(userId, guestId);
+  if (!cart) {
+    throw new apiError(404, "Cart not found!");
+  }
+  res.send(cart);
+});
+
+// @desc Merge guest cart into user cart on login
+// @route POST /api/v2/merge
+// @access Private
+const mergeCart = asyncHandler(async (req, res) => {
+  const { guestId } = req.body;
+  const userId = req.user._id;
+
+  const guestCart = await Cart.findOne({ guestId });
+  const userCart = await Cart.findOne({ user: userId });
+
+  if (!guestCart || guestCart.products.length === 0) return res.json({ message: "Guest cart is empty or not found" });
+
+  if (userCart) {
+    guestCart.products.forEach((guestItem) => {
+      const productIndex = userCart.products.findIndex(
+        (item) => item.productId.toString() === guestItem.productId.toString() && item.size === guestItem.size && item.color === guestItem.color
+      );
+      
+      if (productIndex > -1) {
+        userCart.products[productIndex].quantity += guestItem.quantity;
+      } else {
+        userCart.products.push(guestItem);
+      }
+    });
+    
+    userCart.totalPrice = userCart.products.reduce((acc, item) => acc + item.price * item.quantity, 0);
+    await userCart.save();
+    await Cart.deleteOne({ guestId });
+    return res.json(userCart);
+  }
+  
+  guestCart.user = userId;
+  guestCart.guestId = undefined;
+  await guestCart.save();
+  res.json(guestCart);
+});
+
+export { addCart, updateCart, deleteCart, getCart,mergeCart };
