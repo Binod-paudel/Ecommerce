@@ -10,6 +10,9 @@ import cookieParser from 'cookie-parser';
 import userRouter from './routes/user.router.js';
 import productRouter from './routes/product.router.js'
 import cartRouter from './routes/cart.route.js'
+import checkoutRouter from './routes/checkout.router.js'
+import orderRouter from './routes/order.router.js'
+import uploadRouter from './routes/upload.Router.js'
 
 
 //Initialization
@@ -26,6 +29,9 @@ app.use(logger);
 app.use("/api/v2/users", userRouter);
 app.use("/api/v2/products", productRouter);
 app.use("/api/v2/cart", cartRouter);
+app.use("/api/v2/checkout", checkoutRouter);
+app.use("/api/v2/orders", orderRouter);
+app.use("/api/v2/uploads", uploadRouter);
 
 app.use(errorHandler)
 app.use(notFoundHandler)

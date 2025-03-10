@@ -10,3 +10,4 @@ const connectDb = async(req, res)=>{
 }
 
 export default connectDb;
+

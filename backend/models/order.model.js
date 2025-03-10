@@ -7,7 +7,7 @@ const orderItemSchema = new mongoose.Schema({
           required: true,
      },
      name: {
-          type: True,
+          type: String,
           required: true,
      },
      image: {
@@ -70,7 +70,7 @@ const OrderSchema = new mongoose.Schema({
      status: {
           type: String,
           enum: ["Processing", "Shipped", "Delivered", "Cancelled"],
-          default: Processing
+          default: "Processing"
      },
 },
 {timestamps: true}
