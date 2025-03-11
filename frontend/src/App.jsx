@@ -2,11 +2,12 @@ import {BrowserRouter, Route, Routes} from "react-router-dom"
 import UserLayout from "./components/Layout/UserLayout"
 import Home from "./pages/Home"
 import { Toaster } from "sonner";
+import Login from "./pages/Login";
 
 
 const App = () => {
   return (
-    <BrowserRouter>
+    <BrowserRouter future={{v7_startTransition: true, v7_relativeSplatPath: true}}>
     <Toaster position="top-right" />
     {/* 
        www.rabbit.com/home 
@@ -18,6 +19,7 @@ const App = () => {
         {/* User Layout */}
         {/* Home */}
           <Route index element={<Home />} />
+          <Route path="login" element={<Login />} />
         {/* products */}
         {/* cart */}
         </Route>
