@@ -37,7 +37,7 @@ const Navbar = () => {
           {["Men", "Women", "Top wear", "Bottom wear"].map((item, index) => (
             <Link
               key={index}
-              to="#"
+              to="/collections/all"
               className="text-gray-700 hover:text-black text-sm font-medium uppercase"
             >
               {item}

@@ -1,11 +1,14 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-const ProductGrid = ({ products }) => {
+const ProductGrid = ({ products = [] }) => {
+  if (!Array.isArray(products) || products.length === 0) {
+    return <p className="text-center text-gray-500">No products available</p>;
+  }
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
       {products.map((product, index) => (
-        <Link key={index} to={`/product/${product._id} className="block"`}>
+        <Link key={index} to={`/product/${product._id}`} className="block">
           <div className="bg-white p-4 rounded-lg">
             <div className="w-full h-96 mb-4">
               <img
@@ -15,7 +18,9 @@ const ProductGrid = ({ products }) => {
               />
             </div>
             <h3 className="text-sm mb-2">{product.name}</h3>
-            <p className="text-gray-500 font-medium text-sm tracking-tighter">${product.price}</p>
+            <p className="text-gray-500 font-medium text-sm tracking-tighter">
+              ${product.price}
+            </p>
           </div>
         </Link>
       ))}
