@@ -48,12 +48,21 @@ const Navbar = () => {
         {/* Right - Icons */}
         <div className="flex items-center space-x-4">
           {/* User Profile */}
+          <Link
+            to="/Admin"
+            className="block bg-black px-2 rounded text-sm text-white"
+          >
+            Admin
+          </Link>
           <Link to="/profile" className="hover:text-black">
             <HiOutlineUser className="h-6 w-6 text-gray-700" />
           </Link>
 
           {/* Shopping Cart */}
-          <button onClick={toggleCartDrawer} className="relative hover:text-black">
+          <button
+            onClick={toggleCartDrawer}
+            className="relative hover:text-black"
+          >
             <HiOutlineShoppingBag className="h-6 w-6 text-gray-700" />
             <span className="absolute -top-1 -right-2 bg-red-500 text-white text-xs rounded-full px-2 py-0.5">
               4
