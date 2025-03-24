@@ -6,7 +6,7 @@ import apiError from "../utils/apiError.js";
 const checkAuth = asyncHandler(async (req, res, next) => {
     let token = req.cookies.jwt;
     if (!token) {
-      throw new ApiError(401, "You must be logged in!");
+      throw new apiError(401, "You must be logged in!");
     }
     try {
       let { userId } = jwt.verify(token, process.env.JWT_SECRET);

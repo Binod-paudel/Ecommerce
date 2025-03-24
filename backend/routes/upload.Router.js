@@ -26,11 +26,11 @@ const streamUpload = (fileBuffer) => {
         let stream = cloudinary.uploader.upload_stream(
             { folder: 'uploads' }, // Optional: specify a folder
             (error, result) => {
-                if (result) {
-                    resolve(result);
-                } else {
-                    reject(error);
+                if (error) {
+                    console.error('Cloudinary Upload Error:', error);
+                    return reject(error);
                 }
+                resolve(result);
             }
         );
         streamifier.createReadStream(fileBuffer).pipe(stream);
@@ -40,18 +40,25 @@ const streamUpload = (fileBuffer) => {
 // API Route for Image Upload
 router.post('/', upload.single('image'), async (req, res, next) => {
     try {
-        if (!req.file) {
-            return res.status(400).json({ message: 'No file uploaded' });
+        // Validate that a file is present
+        if (!req.file || !req.file.buffer) {
+            return res.status(400).json({ message: 'No file uploaded or invalid file format' });
         }
 
+        // Log file details for debugging
+        console.log('Uploading file:', req.file.originalname, req.file.mimetype);
+
+        // Upload the file to Cloudinary
         const result = await streamUpload(req.file.buffer);
 
+        // Send response with Cloudinary URL
         res.status(200).json({
             message: 'Image uploaded successfully',
             imageUrl: result.secure_url,
         });
     } catch (error) {
-        next(new apiError(500, 'Server Error'));
+        console.error('Upload Route Error:', error);
+        next(new apiError(500, 'Failed to upload image'));
     }
 });
 

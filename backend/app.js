@@ -13,6 +13,8 @@ import cartRouter from './routes/cart.route.js'
 import checkoutRouter from './routes/checkout.router.js'
 import orderRouter from './routes/order.router.js'
 import uploadRouter from './routes/upload.Router.js'
+import subscribeRouter from './routes/subscribe.router.js'
+import adminRouter from './routes/admin.router.js'
 
 
 //Initialization
@@ -32,6 +34,8 @@ app.use("/api/v2/cart", cartRouter);
 app.use("/api/v2/checkout", checkoutRouter);
 app.use("/api/v2/orders", orderRouter);
 app.use("/api/v2/uploads", uploadRouter);
+app.use("/api/v2/subscriber", subscribeRouter);
+app.use("/api/v2/admin/users", adminRouter);
 
 app.use(errorHandler)
 app.use(notFoundHandler)
