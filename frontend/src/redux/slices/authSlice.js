@@ -25,7 +25,7 @@ export const loginUser = createAsyncThunk(
   async (userData, { rejectWithValue }) => {
     try {
       let response = await axios.post(
-        `${import.meta.env.VITE_BACKEND_URL}/api/users/login`,
+        `${import.meta.env.VITE_BACKEND_URL}/api/v2/users/login`,
         userData,
         { withCredentials: true } // ✅ FIX: Include credentials
       );
@@ -42,17 +42,19 @@ export const loginUser = createAsyncThunk(
 export const registerUser = createAsyncThunk(
   "auth/registerUser",
   async (userData, { rejectWithValue }) => {
+    console.log("Registering User:", userData); // ✅ Debugging Step
     try {
       let response = await axios.post(
-        `${import.meta.env.VITE_BACKEND_URL}/api/users/register`,
+        `${import.meta.env.VITE_BACKEND_URL}/api/v2/users/register`,
         userData,
-        { withCredentials: true } // ✅ FIX: Include credentials
+        { withCredentials: true }
       );
       localStorage.setItem("userInfo", JSON.stringify(response.data.user));
       localStorage.setItem("userToken", response.data.token);
       return response.data.user;
     } catch (error) {
-      return rejectWithValue(error.response?.data || "Registration failed"); // ✅ Better error handling
+      console.error("Registration Error:", error.response?.data); // ✅ Debugging API Response
+      return rejectWithValue(error.response?.data || "Registration failed");
     }
   }
 );
