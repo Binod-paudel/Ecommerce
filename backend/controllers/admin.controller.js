@@ -27,7 +27,37 @@ const adduserAdmin = asyncHandler(async (req, res) => {
     role: role || "customer",
   });
   await user.save();
-  res.status(201).json({ message: "User created successfully" , user});
+  res.status(201).json({ message: "User created successfully", user });
 });
 
-export { admin, adduserAdmin };
+//@route PUT /api/admin/users/:id
+//@desc Update user info (admin only) - Name, email and role
+//@access Private /Admin
+
+const updateuserAdmin = asyncHandler(async (req, res) => {
+  let user = await User.findById(req.params.id);
+  if (user) {
+    user.name = req.body.name || user.name;
+    user.role = req.body.role || user.role;
+    user.email = req.body.email || user.email;
+  }
+  let updatedUseradmin = await user.save();
+  res.json({ message: "User updated successfully", user: updatedUseradmin });
+});
+
+//@route DELETE /api/admin/users/:id
+//@desc Delete a user 
+//@access Private / Admin
+
+
+const deleteUser = asyncHandler(async(req, res)=>{
+  let user = await User.findById(req.params.id);
+  if(user){
+    await user.deleteOne();
+    res.json({message: "User deleted successfully"})
+  }else{
+    res.stauts(404).json({message: "User not found"});
+  }
+})
+
+export { admin, adduserAdmin, updateuserAdmin, deleteUser};
