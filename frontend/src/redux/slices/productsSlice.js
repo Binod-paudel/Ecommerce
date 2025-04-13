@@ -19,7 +19,7 @@ export const fetchProductsByFilters = createAsyncThunk(
     limit,
   }) => {
     const query = new URLSearchParams();
-    
+
     // Append parameters only if they exist
     if (collection) query.append("collection", collection);
     if (size) query.append("size", size);
@@ -30,7 +30,7 @@ export const fetchProductsByFilters = createAsyncThunk(
     if (sortBy) query.append("sortBy", sortBy);
     if (search) query.append("search", search);
     if (category) query.append("category", category); // Fixed typo
-    if (material) query.append("material", material); 
+    if (material) query.append("material", material);
     if (brand) query.append("brand", brand);
     if (limit) query.append("limit", limit);
 
@@ -142,15 +142,18 @@ const productsSlice = createSlice({
       })
 
       // Handle fetching a single product
-      .addCase(fetchProductDetails.pending, (state) => { // Fixed incorrect reference
+      .addCase(fetchProductDetails.pending, (state) => {
+        // Fixed incorrect reference
         state.loading = true;
         state.error = null;
       })
-      .addCase(fetchProductDetails.fulfilled, (state, action) => { // Fixed incorrect reference
+      .addCase(fetchProductDetails.fulfilled, (state, action) => {
+        // Fixed incorrect reference
         state.loading = false;
         state.selectedProduct = action.payload;
       })
-      .addCase(fetchProductDetails.rejected, (state, action) => { // Fixed incorrect reference
+      .addCase(fetchProductDetails.rejected, (state, action) => {
+        // Fixed incorrect reference
         state.loading = false;
         state.error = action.error.message;
       })
@@ -163,7 +166,7 @@ const productsSlice = createSlice({
       .addCase(updateProduct.fulfilled, (state, action) => {
         state.loading = false;
         const updatedProduct = action.payload;
-        
+
         // Find and update the product in the list
         const index = state.products.findIndex(
           (product) => product._id === updatedProduct._id // Fixed incorrect reference

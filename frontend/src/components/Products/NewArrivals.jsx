@@ -1,26 +1,26 @@
 import React, { useRef, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { FiChevronLeft, FiChevronRight } from 'react-icons/fi';
+import axios from 'axios';
 
 const NewArrivals = () => {
-  // const scrollRef = useRef(null);
-  // const [canScrollLeft, setCanScrollLeft] = useState(false);
-  // const [canScrollRight, setCanScrollRight] = useState(true);
-
   const scrollRef = useRef(null);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
-  const [canScrollRight, setCanScrollRight]= useState(true);
+  const [canScrollRight, setCanScrollRight] = useState(true);
 
-  const newArrivals = [
-    { _id: '1', name: 'Stylish Jacket', price: 120, images: [{ url: 'https://picsum.photos/500/500?random=1', altText: 'Stylish Jacket' }] },
-    { _id: '2', name: 'Casual Hoodie', price: 100, images: [{ url: 'https://picsum.photos/500/500?random=2', altText: 'Casual Hoodie' }] },
-    { _id: '3', name: 'Elegant Coat', price: 150, images: [{ url: 'https://picsum.photos/500/500?random=3', altText: 'Elegant Coat' }] },
-    { _id: '4', name: 'Denim Jacket', price: 130, images: [{ url: 'https://picsum.photos/500/500?random=4', altText: 'Denim Jacket' }] },
-    { _id: '5', name: 'Trendy Sweater', price: 110, images: [{ url: 'https://picsum.photos/500/500?random=5', altText: 'Trendy Sweater' }] },
-    { _id: '6', name: 'Winter Coat', price: 170, images: [{ url: 'https://picsum.photos/500/500?random=6', altText: 'Winter Coat' }] },
-    { _id: '7', name: 'Leather Jacket', price: 200, images: [{ url: 'https://picsum.photos/500/500?random=7', altText: 'Leather Jacket' }] },
-    { _id: '8', name: 'Casual Shirt', price: 90, images: [{ url: 'https://picsum.photos/500/500?random=8', altText: 'Casual Shirt' }] },
-  ];
+  const [newArrivals, setNewArrivals] = useState([]);
+
+  useEffect(() => {
+    const fetchNewArrivals = async () => {
+      try {
+        const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/v2/products/new-arrival`);
+        setNewArrivals(response.data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    fetchNewArrivals();
+  }, []); // Empty dependency array ensures this effect runs only once when the component mounts
 
   const updateScrollButtons = () => {
     if (scrollRef.current) {
@@ -29,8 +29,6 @@ const NewArrivals = () => {
       setCanScrollRight(scrollLeft + clientWidth < scrollWidth);
     }
   };
-
-
 
   useEffect(() => {
     const container = scrollRef.current;

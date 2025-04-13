@@ -105,7 +105,7 @@ const authSlice = createSlice({
         state.error = action.payload || "Registration failed"; // ✅ Prevent undefined payload
       });
   },
-});
+}); 
 
 export const { logout, generateNewGuestId } = authSlice.actions;
 export default authSlice.reducer;

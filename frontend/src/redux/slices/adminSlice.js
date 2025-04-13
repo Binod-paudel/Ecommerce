@@ -111,4 +111,4 @@ const adminSlice = createSlice({
   },
 });
 
-export default adminSlice.reducer
+export default adminSlice.reducer;

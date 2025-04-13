@@ -94,15 +94,17 @@ const adminProductSlice = createSlice({
         const index = state.products.findIndex(
           (product) => product._id === action.payload._id
         );
-        if(index !== -1){
+        if (index !== -1) {
           state.products[index] = action.payload;
         }
       })
       //Delete Product
-      .addCase(deleteProduct.fulfilled, (state, action)=>{
-          state.products = state.products.filter((product)=>product._id !== action.payload)
-      })
+      .addCase(deleteProduct.fulfilled, (state, action) => {
+        state.products = state.products.filter(
+          (product) => product._id !== action.payload
+        );
+      });
   },
 });
 
-export default adminProductSlice.reducer
+export default adminProductSlice.reducer;

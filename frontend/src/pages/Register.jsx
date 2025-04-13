@@ -1,19 +1,51 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { Link, useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import register from "../assets/register.webp";
 import { registerUser } from "../redux/slices/authSlice.js";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 const Register = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const dispatch = useDispatch()
+  // Hooks from React Router and Redux
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const location = useLocation();
+  const [searchParams] = useSearchParams();
+
+  // Select relevant state from Redux
+  const { user, guestId } = useSelector((state)=>state.auth);
+  const { cart } = useSelector((state) => state.cart);
+
+  // Get redirect query parameter or default to "/"
+  const redirect = searchParams.get("redirect") || "/";
+  const isCheckoutRedirect = redirect.includes("checkout");
+
+  /**
+   * 🔁 useEffect:
+   * When the user logs in and a cart exists for the guest,
+   * merge guest cart with user cart and then navigate accordingly.
+   */
+  useEffect(() => {
+    if (user) {
+      if (cart?.products.length > 0 && guestId) {
+        // Merge guest cart into logged-in user cart, then redirect
+        dispatch(mergeCart({ guestId, user })).then(() => {
+          navigate(isCheckoutRedirect ? "/checkout" : "/");
+        });
+      } else {
+        // If no merge is needed, just navigate
+        navigate(redirect);
+      }
+    }
+  }, [user, guestId, cart, navigate, isCheckoutRedirect, redirect, dispatch]);
+
 
   const handleSubmit = (e) => {
     e.preventDefault();
     // console.log("User Registered:", { name, email, password });
-    dispatch(registerUser({name, email, password}));
+    dispatch(registerUser({ name, email, password }));
   };
 
   return (
@@ -65,7 +97,10 @@ const Register = () => {
           </button>
           <p className="text-sm mt-6 text-center">
             Don't have an account?{" "}
-            <Link to="/login" className="text-blue-500">
+            <Link
+              to={`/login?redirect=${encodeURIComponent(redirect)}`}
+              className="text-blue-500"
+            >
               Login
             </Link>
           </p>

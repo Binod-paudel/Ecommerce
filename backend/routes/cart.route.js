@@ -6,10 +6,10 @@ import { checkAdmin, checkAuth } from '../middlewares/auth.middleware.js';
 const router = express.Router();
 
 router.post("/", addCart);
-router.put("/update",checkAuth, checkAdmin, updateCart)
-router.delete("/delete", deleteCart);
+router.put("/", updateCart)
+router.delete("/", deleteCart);
 router.get("/", getCart);
-router.get("/merge", checkAdmin, mergeCart);
+router.post("/merge", checkAuth, mergeCart);
 
 
 export default router

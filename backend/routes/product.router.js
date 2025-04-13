@@ -1,6 +1,7 @@
 import express from "express";
 import {
   addProduct,
+  bestSellerProduct,
   deleteProduct,
   getProductById,
   getProducts,
@@ -17,6 +18,8 @@ router.route("/").get(getProducts).post(checkAuth, checkAdmin, addProduct);
 router.get("/topproducts", getTopProducts);
 router.get("/similar/:id", similarProduct);
 router.get("/new-arrival", newArrivalProducts);
+router.get("/best-seller", bestSellerProduct);
+router.get("/:id", getProductById);  // ✅ This route should exist
 router
   .route("/:id")
   .put(checkAuth, checkAdmin, updateProduct)
