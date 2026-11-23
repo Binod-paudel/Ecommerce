@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { TbBrandMeta } from "react-icons/tb";
 import { IoLogoInstagram } from "react-icons/io";
 import { RiTwitterXLine } from "react-icons/ri";
-import {FiPhoneCall} from "react-icons/fi"
+import { FiPhoneCall } from "react-icons/fi";
 
 const Footer = () => {
   let currentDate = new Date().getFullYear();
@@ -25,7 +25,7 @@ const Footer = () => {
               type="email"
               placeholder="Enter your email"
               className="p-3 w-full text-sm border-t border-l borderder-gray-300
-                rounded-l-md focus:oultine-none focus:ring--2 focus:ring-gray-500 transition-all"
+                rounded-l-md focus:oultine-none focus:ring-2 focus:ring-gray-500 transition-all"
               required
             />
             <button
@@ -100,7 +100,7 @@ const Footer = () => {
               rel="noopener noreferrer"
               className="hover:text-gray-300"
             >
-              <TbBrandMeta className="h-5 w-5"/>
+              <TbBrandMeta className="h-5 w-5" />
             </a>
             <a
               href="https://www.facebook.com"
@@ -108,7 +108,7 @@ const Footer = () => {
               rel="noopener noreferrer"
               className="hover:text-gray-300"
             >
-              <IoLogoInstagram className="h-5 w-5"/>
+              <IoLogoInstagram className="h-5 w-5" />
             </a>
             <a
               href="https://www.facebook.com"
@@ -116,19 +116,19 @@ const Footer = () => {
               rel="noopener noreferrer"
               className="hover:text-gray-300"
             >
-              <RiTwitterXLine className="h-4 w-4"/>
+              <RiTwitterXLine className="h-4 w-4" />
             </a>
           </div>
           <p className="text-gray-500">Call Us</p>
           <p>
-            <FiPhoneCall className="inline-block mr-2"/>
+            <FiPhoneCall className="inline-block mr-2" />
             0123-456-789
           </p>
         </div>
       </div>
       {/* Footer Botton */}
       <div className="container mx-auto mt-12 px-4 lg:px-0 border-t border-gray-200 pt-6">
-        <p className="text-gray-500 text-sm tracking-tighter text-center">
+        <p className="text-gray-500 text-sm tracking-tighter text-center ">
           @ {currentDate}, CompileTab. All Rights Reserved.
         </p>
       </div>

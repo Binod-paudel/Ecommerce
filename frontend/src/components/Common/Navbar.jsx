@@ -31,7 +31,7 @@ const Navbar = () => {
   return (
     <>
       {/* Navbar */}
-      <nav className="container mx-auto flex items-center justify-between py-4 px-5">
+      <nav className="container  mx-auto flex items-center justify-between py-4 px-5">
         {/* Left - Logo */}
         <div>
           <Link to="/" className="text-2xl font-medium">
